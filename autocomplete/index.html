@@ -6,11 +6,22 @@
 	<link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
-    <input type="text" id="country" placeholder="Enter country name..." oclick="" >
+    <input type="text" id="country1" placeholder="Enter country name..." >
+    <br /> <br />
+    <input type="text" id="country2" placeholder="Enter country name..." >
     <script type="module">
-        import {attachAutoComplete} from './index.js';
-        var input = document.getElementById("country");
-        var values = ['Afghanistan', 'Albania', 'Algeria', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bangladesh', 'Belarus', 'Belgium', 'Bolivia', 'Brazil', 'Bulgaria', 'Cameroon', 'Canada', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Denmark', 'Dominica', 'Dominican Republic', 'Ecuador', 'Finland', 'France', 'Georgia', 'Germany', 'Gibraltar', 'Greece', 'Greenland', 'Guadeloupe', 'Guatemala', 'Guyana', 'Haiti', 'Iceland', 'India', 'Indonesia', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Jamaica', 'Japan', 'Jersey', 'Jordan', 'Kazakhstan', 'Kenya', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Mauritius', 'Mayotte', 'Mexico', 'Moldova', 'Norway', 'Palau', 'Paraguay', 'Poland', 'Portugal', 'Romania', 'Saint Helena', 'Saint Pierre and Miquelon', 'South Africa', 'South Georgia', 'South Korea', 'Spain', 'Sweden', 'Swaziland', 'Switzerland', 'United Kingdom', 'United States'];
-        attachAutoComplete(input, values);
+        import {attachAutoComplete, attachAutoCompleteObjectAttributes} from './autocomplete-util.js';
+        var country1 = document.getElementById("country1");
+        var country2 = document.getElementById("country2");
+        function showValue() { console.log("Changed to: "+this._value); }
+        country1.addEventListener("change", showValue);
+        country2.addEventListener("change", showValue);
+        fetch("countries.json").then((res) => { return res.json(); })
+        .then((data) => { 
+            var labels = Object.values(data).sort();
+            attachAutoComplete(country1, labels); 
+            attachAutoCompleteObjectAttributes(country2, data);
+        })
+        .catch((err) => { console.log(err); })
     </script>
 </body></html>

@@ -2,7 +2,32 @@
 
 import {autocomplete} from './autocomplete.js';
 
-export function attachAutoComplete(input, values) {
+function objectFlip(obj) {
+    return Object.keys(obj).reduce((ret, key) => {
+      ret[obj[key]] = key;
+      return ret;
+    }, {});
+}
+
+function getRealValue(input, label) {
+    if(input._revMap) {
+        return input._revMap[label];
+    }
+    return label;
+}
+
+export function attachAutoCompleteObjectAttributes(input, object) {
+    let valueLabelArray = [];
+    attachAutoComplete(input, Object.values(object));
+    input._revMap=objectFlip(object);
+}
+
+export function attachAutoComplete(input, labels) {
+    input._revMap = null;
+    if(input._autoComp) {
+        input._autoComp.destroy();
+    }
+
     function fireKeyDown(el) {
         var key = 40;
         if(document.createEventObject) {
@@ -18,24 +43,19 @@ export function attachAutoComplete(input, values) {
     }
 
     input.addEventListener("mouseup", function() { fireKeyDown(this); });
-    input.addEventListener("change", function () {
-        console.log("Change");
-        if(countries.length==0 || countries.includes(this.value)) {
-            this.placeholder = this.value;
-            this.value="";
-        }
-    });
 
-    var items = values.map(function (n) { return { label: n }});
-    autocomplete({
+    var items = labels.map(function (n) { return { label: n }});
+    input._autoComp = autocomplete({
         input: input,
         minLength: 0,
         onSelect: function (item, inputField) {
-            console.log("Change");
             var value = item.label;
-            if(values.length==0 || values.includes(value)) {
+            if(labels.length==0 || labels.includes(value)) {
+                inputField._value=getRealValue(inputField, value);
                 inputField.placeholder = value;
                 inputField.value="";
+                var event = new Event('change');
+                inputField.dispatchEvent(event);
             }
         },
         fetch: function (text, callback) {
