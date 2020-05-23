@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<script src="./lib/autocomplete.js" ></script>
 	<link rel="stylesheet" type="text/css" href="./lib/autocomplete.css">
 	<link rel="stylesheet" type="text/css" href="./index.css">
 </head>
 <body>
 
-    <input type="text" id="country" placeholder="Enter country name..." oclick="" >
+	<input type="text" id="country" placeholder="Enter country name..." oclick="" >
 
 	<script>
-        var input = document.getElementById("country");
+		var input = document.getElementById("country");
 
 		function fireKeyDown(el) {
-            var key = 40;
-            if(document.createEventObject) {
-                var eventObj = document.createEventObject();
-                eventObj.keyCode = key;
-                el.fireEvent("onkeyup", eventObj);
-            } else if(document.createEvent) {
-                var eventObj = document.createEvent("Events");
-                eventObj.initEvent("keyup", true, true);
-                eventObj.which = key;
-                el.dispatchEvent(eventObj);
-            }
-        }
+			var key = 40;
+			if(document.createEventObject) {
+				var eventObj = document.createEventObject();
+				eventObj.keyCode = key;
+				el.fireEvent("onkeyup", eventObj);
+			} else if(document.createEvent) {
+				var eventObj = document.createEvent("Events");
+				eventObj.initEvent("keyup", true, true);
+				eventObj.which = key;
+				el.dispatchEvent(eventObj);
+			}
+		}
 
 		var countries = ['Afghanistan', 'Albania', 'Algeria', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan', 'Bangladesh', 'Belarus', 'Belgium', 'Bolivia', 'Brazil', 'Bulgaria', 'Cameroon', 'Canada', 'Central African Republic', 'Chad', 'Chile', 'China', 'Colombia', 'Denmark', 'Dominica', 'Dominican Republic', 'Ecuador', 'Finland', 'France', 'Georgia', 'Germany', 'Gibraltar', 'Greece', 'Greenland', 'Guadeloupe', 'Guatemala', 'Guyana', 'Haiti', 'Iceland', 'India', 'Indonesia', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Jamaica', 'Japan', 'Jersey', 'Jordan', 'Kazakhstan', 'Kenya', 'Laos', 'Latvia', 'Lebanon', 'Lesotho', 'Liberia', 'Mauritius', 'Mayotte', 'Mexico', 'Moldova', 'Norway', 'Palau', 'Paraguay', 'Poland', 'Portugal', 'Romania', 'Saint Helena', 'Saint Pierre and Miquelon', 'South Africa', 'South Georgia', 'South Korea', 'Spain', 'Sweden', 'Swaziland', 'Switzerland', 'United Kingdom', 'United States'];
 
-        input.addEventListener("mouseup", function() { fireKeyDown(this); });
-        input.addEventListener("change", function () {
-            console.log("Change");
-            if(countries.length==0 || countries.includes(this.value)) {
-                this.placeholder = this.value;
-                this.value="";
-            }
-        });
+		input.addEventListener("mouseup", function() { fireKeyDown(this); });
+		input.addEventListener("change", function () {
+			console.log("Change");
+			if(countries.length==0 || countries.includes(this.value)) {
+				this.placeholder = this.value;
+				this.value="";
+			}
+		});
 
 		var allowedChars = new RegExp(/^[a-zA-Z\s]+$/)
 		function charsAllowed(value) {
@@ -49,18 +49,18 @@
 			input: input,
 			minLength: 0,
 			onSelect: function (item, inputField) {
-                console.log("Change");
-                var value = item.label;
-                if(countries.length==0 || countries.includes(value)) {
-                    inputField.placeholder = value;
-                    inputField.value="";
-                }
+				console.log("Change");
+				var value = item.label;
+				if(countries.length==0 || countries.includes(value)) {
+					inputField.placeholder = value;
+					inputField.value="";
+				}
 			},
 			fetch: function (text, callback) {
 				var match = text.toLowerCase();
 				callback(items.filter(function(n) {
-				    return n.label.toLowerCase().indexOf(match) !== -1;
-                }));
+					return n.label.toLowerCase().indexOf(match) !== -1;
+				}));
 			},
 		})
 
